@@ -1,0 +1,23 @@
+{
+  "name": "se_project_express",
+  "version": "1.0.0",
+  "description": "A backend project for managing user and application data",
+  "homepage": "https://github.com/cephasabiangama22-design/se_project_express#readme",
+  "bugs": {
+    "url": "https://github.com/cephasabiangama22-design/se_project_express/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cephasabiangama22-design/se_project_express.git"
+  },
+  "license": "ISC",
+  "author": "Cephas Abiangama",
+  "type": "commonjs",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
