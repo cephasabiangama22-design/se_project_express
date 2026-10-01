@@ -1,15 +1,16 @@
 const express = require("express");
+
 const { PORT = 3001 } = process.env;
 const app = express();
 const mongoose = require("mongoose");
-const mainRouter = require("./routes/index.js");
-const { NOT_FOUND_ERROR_CODE } = require("./utils/errors.js");
+
+const mainRouter = require("./routes/index");
+
+const { NOT_FOUND_ERROR_CODE } = require("./utils/errors");
 
 mongoose
   .connect("mongodb://127.0.0.1:27017/wtwr_db")
-  .then(() => {
-    console.log("Connnected to DB");
-  })
+  .then(() => {})
   .catch(console.error);
 
 app.use(express.json());

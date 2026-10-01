@@ -26,6 +26,9 @@ const createUser = (req, res) => {
           .status(BAD_REQUEST_ERROR_CODE)
           .send({ message: err.message });
       }
+      return res
+        .status(SERVER_ERROR_CODE)
+        .send({ message: "An error has occurred on the server" });
     });
 };
 
@@ -37,13 +40,14 @@ const getUser = (req, res) => {
     .catch((err) => {
       if (err.name === "DocumentNotFoundError") {
         return res.status(NOT_FOUND_ERROR_CODE).send({ message: err.message });
-      } else if (err.name === "CastError") {
+      }
+      if (err.name === "CastError") {
         return res
           .status(BAD_REQUEST_ERROR_CODE)
           .send({ message: err.message });
       }
       return res
-        .status(500)
+        .status(SERVER_ERROR_CODE)
         .send({ message: "An error has occurred on the server" });
     });
 };

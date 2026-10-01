@@ -1,4 +1,4 @@
-const clothingItem = require("../models/clothingItems.js");
+const ClothingItem = require("../models/clothingItems");
 const {
   BAD_REQUEST_ERROR_CODE,
   NOT_FOUND_ERROR_CODE,
@@ -6,11 +6,9 @@ const {
 } = require("../utils/errors");
 
 const getItems = (req, res) => {
-  clothingItem
-    .find({})
+  ClothingItem.find({})
     .then((clothingItems) => res.status(200).send(clothingItems))
     .catch((err) => {
-      console.log(err);
       return res
         .status(SERVER_ERROR_CODE)
         .send({ message: "Requested resource not found" });
@@ -20,8 +18,7 @@ const getItems = (req, res) => {
 const createItem = (req, res) => {
   const { name, weather, imageUrl, owner, like, createAt } = req.body;
 
-  clothingItem
-    .create({ name, weather, imageUrl, owner, like, createAt })
+  ClothingItem.create({ name, weather, imageUrl, owner, like, createAt })
     .then((clothingItem) => res.status(201).send(clothingItem))
     .catch((err) => {
       console.error(err);
@@ -30,22 +27,25 @@ const createItem = (req, res) => {
           .status(BAD_REQUEST_ERROR_CODE)
           .send({ message: err.message });
       }
+      return res.status(SERVER_ERROR_CODE).send({
+        message: "An error has occurred on the server",
+      });
     });
 };
 
 const deleteItem = (req, res) => {
   const { itemId } = req.params;
 
-  clothingItem
-    .findByIdAndDelete(itemId)
+  ClothingItem.findByIdAndDelete(itemId)
     .orFail()
-    .then((clothingItem) => res.status(200).send(item))
+    .then((clothingItem) => res.status(200).send(clothingItem))
     .catch((err) => {
       if (err.name === "CastError") {
         return res
           .status(BAD_REQUEST_ERROR_CODE)
           .send({ message: "Requested resource not found" });
-      } else if (err.name === "DocumentNotFoundError") {
+      }
+      if (err.name === "DocumentNotFoundError") {
         return res
           .status(BAD_REQUEST_ERROR_CODE)
           .send({ message: err.message });
@@ -64,11 +64,11 @@ const likeItem = (req, res) => {
     { new: true }
   )
     .orFail()
-    .then((item) => res.status(200).send(item))
+    .then((clothingItem) => res.status(200).send(clothingItem))
     .catch((err) => {
       if (err.name === "CastError") {
         return res
-          .status(BAD_REQUEST_ERROR_CODE0)
+          .status(BAD_REQUEST_ERROR_CODE)
           .send({ message: err.message });
       }
 
@@ -83,28 +83,28 @@ const likeItem = (req, res) => {
 };
 
 const dislikeItem = (req, res) => {
-  req.params.itemId,
+  ClothingItem.findByIdAndUpdate(
+    req.params.itemId,
     { $pull: { likes: req.user._id } },
     { new: true }
-      .orFail()
-      .then((item) => res.status(200).send(item))
-      .catch((err) => {
-        if (err.name === "CastError") {
-          return res
-            .status(BAD_REQUEST_ERROR_CODE)
-            .send({ message: err.message });
-        }
-
-        if (err.name === "DocumentNotFoundError") {
-          return res
-            .status(NOT_FOUND_ERROR_CODE)
-            .send({ message: err.message });
-        }
-
+  )
+    .orFail()
+    .then((clothingItem) => res.status(200).send(clothingItem))
+    .catch((err) => {
+      if (err.name === "CastError") {
         return res
-          .status(SERVER_ERROR_CODE)
-          .send({ message: "Requested resource not found" });
-      });
+          .status(BAD_REQUEST_ERROR_CODE)
+          .send({ message: err.message });
+      }
+
+      if (err.name === "DocumentNotFoundError") {
+        return res.status(NOT_FOUND_ERROR_CODE).send({ message: err.message });
+      }
+
+      return res
+        .status(SERVER_ERROR_CODE)
+        .send({ message: "Requested resource not found" });
+    });
 };
 
 module.exports = { getItems, createItem, deleteItem, likeItem, dislikeItem };
