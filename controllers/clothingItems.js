@@ -9,9 +9,10 @@ const getItems = (req, res) => {
   ClothingItem.find({})
     .then((clothingItems) => res.status(200).send(clothingItems))
     .catch((err) => {
+      console.error(err);
       return res
         .status(SERVER_ERROR_CODE)
-        .send({ message: "Requested resource not found" });
+        .send({ message: "An error has occurred on the server" });
     });
 };
 
@@ -53,7 +54,7 @@ const deleteItem = (req, res) => {
 
       return res
         .status(SERVER_ERROR_CODE)
-        .send({ message: "Requested resource not found" });
+        .send({ message: "An error has occurred on the server" });
     });
 };
 
@@ -78,7 +79,7 @@ const likeItem = (req, res) => {
 
       return res
         .status(SERVER_ERROR_CODE)
-        .send({ message: "Requested resource not found" });
+        .send({ message: "An error has occurred on the server" });
     });
 };
 
@@ -103,7 +104,7 @@ const dislikeItem = (req, res) => {
 
       return res
         .status(SERVER_ERROR_CODE)
-        .send({ message: "Requested resource not found" });
+        .send({ message: "An error has occurred on the server" });
     });
 };
 
