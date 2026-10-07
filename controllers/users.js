@@ -15,7 +15,9 @@ const getUsers = (req, res) => {
     .then((users) => res.status(200).send(users))
     .catch((err) => {
       console.error(err);
-      return res.status(SERVER_ERROR_CODE).send({ message: err.message });
+      return res
+        .status(SERVER_ERROR_CODE)
+        .send({ message: "An error has occurred on the server" });
     });
 };
 
@@ -81,7 +83,7 @@ const update = (req, res) => {
     .then((user) => res.status(200).send(user))
     .catch((err) => {
       if (err.name === "DocumentNotFoundError") {
-        return res.status(NOT_FOUND_ERROR_CODE).SEND({ messsage: err.message });
+        return res.status(NOT_FOUND_ERROR_CODE).send({ messsage: err.message });
       }
       if (err.name === "ValidationError") {
         return res
