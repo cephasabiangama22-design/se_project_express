@@ -3,6 +3,7 @@ const {
   BAD_REQUEST_ERROR_CODE,
   NOT_FOUND_ERROR_CODE,
   SERVER_ERROR_CODE,
+  FORBIDDEN_ERROR_CODE,
 } = require("../utils/errors");
 
 const getItems = (req, res) => {
@@ -37,9 +38,18 @@ const createItem = (req, res) => {
 const deleteItem = (req, res) => {
   const { itemId } = req.params;
 
-  ClothingItem.findByIdAndDelete(itemId)
+  ClothingItem.findById(itemId)
     .orFail()
-    .then((clothingItem) => res.status(200).send(clothingItem))
+    .then((clothingItem) => {
+      if (clothingItem.owner.toString() !== req.user._id) {
+        return res
+          .status(FORBIDDEN_ERROR_CODE)
+          .send({ message: "You do not have permission to delete this item" });
+      }
+      return ClothingItem.findByIdAndDelete(itemId).then((deletedItem) =>
+        res.status(200).send(deletedItem)
+      );
+    })
     .catch((err) => {
       if (err.name === "CastError") {
         return res
@@ -47,9 +57,7 @@ const deleteItem = (req, res) => {
           .send({ message: "Requested resource not found" });
       }
       if (err.name === "DocumentNotFoundError") {
-        return res
-          .status(BAD_REQUEST_ERROR_CODE)
-          .send({ message: err.message });
+        return res.status(NOT_FOUND_ERROR_CODE).send({ message: err.message });
       }
 
       return res

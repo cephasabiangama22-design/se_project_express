@@ -64,3 +64,7 @@ The project uses the Airbnb ESLint configuration.
 - ## Final Project Deployment Link
 
 [GitHub Repository](https://github.com/cephasabiangama22-design/se_project_express.git)
+
+### Project Pitch Video
+
+https://www.loom.com/share/cc634abce8e34790828b33d757fad271
