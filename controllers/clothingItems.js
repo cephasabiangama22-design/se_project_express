@@ -20,7 +20,12 @@ const getItems = (req, res) => {
 const createItem = (req, res) => {
   const { name, weather, imageUrl } = req.body;
 
-  ClothingItem.create({ name, weather, imageUrl, owner, like, createAt })
+  ClothingItem.create({
+    name,
+    weather,
+    imageUrl,
+    owner: req.user._id,
+  })
     .then((clothingItem) => res.status(201).send(clothingItem))
     .catch((err) => {
       console.error(err);
