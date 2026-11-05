@@ -9,6 +9,7 @@ const {
   CONFLICT_ERROR,
 } = require("../utils/errors");
 const { JWT_SECRET } = require("../utils/config");
+const { UnauthorizedError } = require("../errors/bad-request-error");
 
 const createUser = (req, res) => {
   const { name, avatar, email, password } = req.body;
@@ -41,22 +42,12 @@ const createUser = (req, res) => {
     });
 };
 
-const getCurrentUser = (req, res) => {
+const getCurrentUser = (req, res, next) => {
   User.findById(req.user._id)
     .orFail()
     .then((user) => res.status(200).send(user))
     .catch((err) => {
-      if (err.name === "DocumentNotFoundError") {
-        return res.status(NOT_FOUND_ERROR_CODE).send({ message: err.message });
-      }
-      if (err.name === "CastError") {
-        return res
-          .status(BAD_REQUEST_ERROR_CODE)
-          .send({ message: err.message });
-      }
-      return res
-        .status(SERVER_ERROR_CODE)
-        .send({ message: "An error has occurred on the server" });
+      next(err);
     });
 };
 
@@ -104,7 +95,7 @@ const login = (req, res) => {
     })
     .catch((err) => {
       if (err.message === "Incorrect email or password") {
-        return res.status(401).send({ message: err.message });
+        return res.status(UnauthorizedError).send({ message: err.message });
       }
       return res
         .status(SERVER_ERROR_CODE)
