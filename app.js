@@ -35,7 +35,7 @@ app.use((req, res) => {
 app.use(errors());
 
 app.use(requestLogger);
-app.use(routes);
+// app.use(routes);
 
 app.use(errorLogger);
 

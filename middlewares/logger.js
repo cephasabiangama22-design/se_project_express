@@ -2,7 +2,7 @@ const winston = require("winston");
 const expressWinston = require("express-winston");
 
 const messageFormat = winston.format.combine(
-  winston.format.timmestamp(),
+  winston.format.timestamp(),
   winston.format.printf(
     ({ level, message, meta, timmestamp }) =>
       `${timestamp} ${level}: ${meta.error?.stack || message}`
@@ -22,7 +22,7 @@ const requestLogger = expressWinston.logger({
 });
 
 const errorLogger = expressWinston.errorLogger({
-  transports: [new winston.transports.file({ filename: "error.log" })],
+  transports: [new winston.transports.File({ filename: "error.log" })],
 
   format: winston.format.json(),
 });
