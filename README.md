@@ -67,4 +67,4 @@ The project uses the Airbnb ESLint configuration.
 
 ### Project Pitch Video
 
-https://www.loom.com/share/cc634abce8e34790828b33d757fad271
+(https://www.loom.com/share/9bb3cab640a64ff495f08fbffb532c7d)

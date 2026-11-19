@@ -12,6 +12,7 @@ const mainRouter = require("./routes/index");
 
 const { NOT_FOUND_ERROR_CODE } = require("./utils/errors");
 const { requestLogger, errorLogger } = require("./middlewares/logger");
+const NotFoundError = require("./errors/not-found-error");
 
 mongoose
   .connect("mongodb://127.0.0.1:27017/wtwr_db")
@@ -24,18 +25,15 @@ app.use(express.json());
 
 app.use(cors());
 
+app.use(requestLogger);
+
 app.use("/", mainRouter);
 
-app.use((req, res) => {
-  res
-    .status(NOT_FOUND_ERROR_CODE)
-    .send({ message: "Requested resource not found" });
+app.use((req, res, next) => {
+  next(new NotFoundError("Requested resource not found"));
 });
 
 app.use(errors());
-
-app.use(requestLogger);
-// app.use(routes);
 
 app.use(errorLogger);
 

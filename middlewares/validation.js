@@ -23,7 +23,7 @@ module.exports.validateClothingItem = celebrate({
       "string.empty": 'The "name" field must be filled in',
     }),
 
-    imageUrl: Joi.string().required().custom(validateURL).message({
+    imageUrl: Joi.string().required().custom(validateUrl).message({
       "string.empty": 'The "imageUrl" field must be filled in',
       "string.url": 'The "imageUrl" field must be a valid URL',
     }),
@@ -37,7 +37,7 @@ module.exports.validateUser = celebrate({
       "string.max": 'The maxium length of the "name" field is 30',
       "string.empty": 'The "name" field must be filled in',
     }),
-    avatar: Joi.string().required().custom(validateURL).messages({
+    avatar: Joi.string().required().custom(validateUrl).messages({
       "string.empty": 'The "avatar" field must be filled in',
       "string.url": 'The "avatarUrl" field must be a valid URL',
     }),

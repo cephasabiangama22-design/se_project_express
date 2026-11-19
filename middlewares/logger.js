@@ -5,7 +5,7 @@ const messageFormat = winston.format.combine(
   winston.format.timestamp(),
   winston.format.printf(
     ({ level, message, meta, timmestamp }) =>
-      `${timestamp} ${level}: ${meta.error?.stack || message}`
+      `${timmestamp} ${level}: ${meta.error?.stack || message}`
   )
 );
 
