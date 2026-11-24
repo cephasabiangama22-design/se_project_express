@@ -5,13 +5,10 @@ const userRouter = require("./users");
 const { login, createUser } = require("../controllers/users");
 const { getItems } = require("../controllers/clothingItems");
 const auth = require("../middlewares/auth");
-const {
-  validateUserBody,
-  validateLogin,
-} = require("../middlewares/validation");
+const { validateUser, authenticateUser } = require("../middlewares/validation");
 
-router.post("/signin", validateLogin, login);
-router.post("/signup", validateUserBody, createUser);
+router.post("/signin", authenticateUser, login);
+router.post("/signup", validateUser, createUser);
 router.get("/items", getItems);
 
 router.use(auth);
