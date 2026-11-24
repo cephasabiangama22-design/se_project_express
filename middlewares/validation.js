@@ -17,6 +17,7 @@ const validateUrl = (value, helpers) => {
 
 module.exports.validateClothingItem = celebrate({
   body: Joi.object().keys({
+    weather: Joi.string().valid("hot", "warm", "cold").required(),
     name: Joi.string().required().min(2).max(30).message({
       "string.min": 'The minimum length of the"name" field is 2',
       "string.max": 'The maxium length of the "name" field is 30',
@@ -60,5 +61,12 @@ module.exports.authenticateUser = celebrate({
     password: Joi.string().required().message({
       "string.empty": 'The "password" field must be filled in',
     }),
+  }),
+});
+
+module.exports.validateUpateUser = celebrate({
+  body: Joi.object().keys({
+    name: Joi.string().min(2).max(30),
+    avatar: Joi.string().custom(validateUrl),
   }),
 });

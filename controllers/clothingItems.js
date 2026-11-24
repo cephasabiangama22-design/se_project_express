@@ -24,7 +24,7 @@ const createItem = (req, res, next) => {
     .catch((err) => {
       console.error(err);
       if (err.name === "ValidationError") {
-        return next(new BadRequestError(err.message));
+        return next(new BadRequestError("Invalid data"));
       }
       return next(err);
     });
@@ -88,7 +88,7 @@ const dislikeItem = (req, res, next) => {
     .then((clothingItem) => res.status(200).send(clothingItem))
     .catch((err) => {
       if (err.name === "CastError") {
-        returnnext(new BadRequestError("Invalid item ID"));
+        return next(new BadRequestError("Invalid item ID"));
       }
 
       if (err.name === "DocumentNotFoundError") {

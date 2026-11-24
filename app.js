@@ -1,16 +1,16 @@
 const express = require("express");
 const cors = require("cors");
-const errorHandler = require("./middlewares/errorHandler");
+const mongoose = require("mongoose");
 const { errors } = require("celebrate");
+const errorHandler = require("./middlewares/errorHandler");
+
 require("dotenv").config();
 
 const { PORT = 3001 } = process.env;
 const app = express();
-const mongoose = require("mongoose");
 
 const mainRouter = require("./routes/index");
 
-const { NOT_FOUND_ERROR_CODE } = require("./utils/errors");
 const { requestLogger, errorLogger } = require("./middlewares/logger");
 const NotFoundError = require("./errors/not-found-error");
 
@@ -33,9 +33,9 @@ app.use((req, res, next) => {
   next(new NotFoundError("Requested resource not found"));
 });
 
-app.use(errors());
-
 app.use(errorLogger);
+
+app.use(errors());
 
 app.use(errorHandler);
 
