@@ -53,10 +53,10 @@ const update = (req, res, next) => {
     .then((user) => res.status(200).send(user))
     .catch((err) => {
       if (err.name === "DocumentNotFoundError") {
-        return next(new NotFoundError(err.message));
+        return next(new NotFoundError("Requested resource not found"));
       }
       if (err.name === "ValidationError") {
-        return next(new BadRequestError(err.message));
+        return next(new BadRequestError("Invalid item ID"));
       }
 
       return next(err);

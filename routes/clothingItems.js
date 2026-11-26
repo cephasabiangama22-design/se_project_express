@@ -11,7 +11,6 @@ const {
   validateItemId,
 } = require("../middlewares/validation");
 
-router.get("/", getItems);
 router.post("/", validateClothingItem, createItem);
 router.delete("/:itemId", validateItemId, deleteItem);
 router.put("/:itemId/likes", validateItemId, likeItem);

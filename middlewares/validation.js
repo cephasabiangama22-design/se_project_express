@@ -46,7 +46,7 @@ module.exports.validateUser = celebrate({
       "string.empty": 'The "email" field must be filled in',
       "string.email": 'The "email" field must be a valid email address',
     }),
-    password: Joi.string().required().message({
+    password: Joi.string().required().messages({
       "string.empty": 'The "password" field must be filled in',
     }),
   }),
